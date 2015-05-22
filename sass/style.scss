@@ -1,0 +1,544 @@
+@import 'compass/reset';
+
+
+/******** Compass sprites starts ********/
+	@import "compass/utilities/sprites";
+ 
+$social-layout: normal;
+$sprite-spacing: 10px;
+@import "sprite/*.png";
+@include all-sprite-sprites; 
+
+/******** Compass sprites ends ********/
+
+
+/******** Apple text hack starts ********/
+	div, span, a, li, h1, h2, h3, h4, 
+	h5, h6, td, input, textarea, button {
+		-webkit-text-size-adjust: none;
+		-o-text-size-adjust: none;
+		-moz--text-size-adjust: none;
+		text-size-adjust: none;
+		max-height: 999999px;
+	}
+	input[type=text],
+	input[type=password],
+	input[type=submit],
+	textarea {
+		-webkit-appearance: none !important;
+	}
+/******** Apple text hack ends ********/
+
+
+/******** General styles starts ********/
+/* fonts */
+@import "http://webfonts.ru/import/osans.css";
+/*
+	Open Sans, 300, 300 italic, 400, 400 italic, 600, 600 italic, 700, 700 italic, 800, 800 italic
+*/
+
+
+/* variables */
+$grey: #828282;
+$grey2: #d9dbdd;
+$grey3: #2a363a;
+$grey4: #555555;
+$grey5: #9b9b9b;
+$grey6: #484848;
+$darkGrey: #222b2e;
+$darkGrey1: #2c383c;
+$darkGrey2: #f6f6f6;
+$lightGrey: #d1d1d1;
+$lightGrey1: #ededed;
+$lightGrey2: #ececec;
+$lightGrey3: #f1f1f1;
+$yellow: #ffd42d;
+$darkYellow: #ccaa24;
+
+html, body {
+	min-height: 100%;
+}
+body {
+	font-family: "Open Sans", Arial;
+	color: $grey;
+	background: $grey2;
+	padding: 100px 0;
+}
+h1 {
+	color: $darkGrey1;
+	font-size: 30px;
+	font-weight: bold;
+	text-transform: uppercase;
+}
+h2 {
+	font-size: 20px;
+}
+p {
+	line-height: 24px;
+	font-size: 15px;
+}
+.main-container {
+	background: $grey2;
+	width: 980px;
+	min-height: 100%;
+	height: auto !important; /* for IE6 support */
+	height: 100%;
+	margin: 0 auto;
+	overflow: hidden;
+	.left {
+		width: 280px;
+		float: left;
+		.logo {
+			width: 280px;
+			height: 266px;
+			background: url('../img/photobg.jpg') no-repeat;
+			position: relative;
+			div {
+				width: 120px;
+				height: 120px;
+				border: 10px solid rgba(255,255,255,0.2);
+				border-radius: 100px;
+				position: absolute;
+				right: 0;
+				left: 0;
+				top: 0;
+				bottom: 0;
+				margin: auto;
+				overflow: hidden;
+				img {
+					position: absolute;
+					display: block;
+					top: 0;
+					bottom: 0;
+					right: 0;
+					left: 0;
+					margin: auto;
+				}
+			}
+		}
+		nav {
+			width: 215px;
+			li {
+				display: block;
+				&.profile {
+					a i {
+						width: 16px;
+						height: 18px;
+						@extend .sprite-man;
+					}
+					&:hover i {
+						@extend .sprite-man:hover;
+					}
+				}
+				&.work {
+					a i {
+						width: 22px;
+						height: 17px;
+						@extend .sprite-portfel;
+					}
+					&:hover i {
+						@extend .sprite-portfel:hover;
+					}
+				}
+				&.resume {
+					a i {
+						width: 15px;
+						height: 19px;
+						@extend .sprite-resume;
+					}
+					&:hover i {
+						@extend .sprite-resume:hover;
+					}
+				}
+				&.blog {
+					a i {
+						width: 21px;
+						height: 18px;
+						@extend .sprite-speech;
+					}
+					&:hover i {
+						@extend .sprite-speech:hover;
+					}
+				}
+				&.contact {
+					a i {
+						width: 21px;
+						height: 16px;
+						@extend .sprite-mail;
+					}
+					&:hover i {
+						@extend .sprite-mail:hover;
+					}
+				}
+			}
+			a {
+				background: $grey3;
+				color: $lightGrey;
+				text-decoration: none;
+				text-align: right;
+				position: relative;
+				border-bottom: 1px solid $darkGrey;
+				width: 100%;
+				display: inline-block;
+				padding-right: 65px;
+				line-height: 70px;
+				&:hover {
+					background: $yellow;
+					border-color: $darkYellow;
+					color: $darkGrey1;
+				}
+				i {
+					content: "";
+					display: block;
+					position: absolute;
+					right: 26px;
+					top: 27px;
+				}
+			}
+		}
+	}
+	.right {
+		background: #fff;
+		float: right;
+		width: 700px;
+		header {
+			padding: 30px 0;
+			overflow: hidden;
+			border-bottom: 1px solid $lightGrey1;
+			h1 {
+				display: block;
+				float: left;
+			}
+			.controls {
+				float: right;
+				span {
+					font-size: 13px;
+					display: block;
+					float: left;
+					padding-top: 8px;
+					margin-right: 18px;
+				}
+				a {
+					display: inline-block;
+					width: 26px;
+					height: 27px;
+					&.prev {
+						@extend .sprite-arrowl;
+						margin-right: 4px;
+					}
+					&.next {
+						@extend .sprite-arrowr;
+					}
+				}
+			}
+			.main-title {
+				text-transform: none;
+				font-weight: lighter;
+				font-size: 32px;
+				position: relative;
+				display: block;
+				padding-bottom: 26px;
+				float: none;
+				margin-bottom: 19px;
+				&::after {
+					content: "";
+					width: 70px;
+					border-bottom: 3px solid $yellow;
+					position: absolute;
+					bottom: 0;
+					left: 0;
+				}
+				span {
+					font-weight: bold;
+				}
+			}
+			p.title {
+				margin-top: 19px;
+				font-size: 17px;
+				line-height: 29px;
+				margin-bottom: -12px;
+			}
+			.form-msg {
+				clear: both;
+				display: block;
+				padding-top: 17px;
+				color: red;
+			}
+		}
+		.main-area {
+			padding: 30px 0;
+			&.minimal {
+				padding-top: 20px;
+			}
+			.personal-info {
+				h2 {
+					position: relative;
+					font-size: 24px;
+					font-weight: lighter;
+					display: block;
+					padding-bottom: 21px;
+					float: none;
+					&::after {
+						content: "";
+						width: 50px;
+						border-bottom: 6px solid $yellow;
+						position: absolute;
+						bottom: 0;
+						left: 0;
+					}
+				}
+				li {
+					border: 1px solid $lightGrey1;
+					margin: 19px 22px 0px 0;
+					span {
+						padding: 13px;
+						display: inline-block;
+					}
+					display: inline-block;
+					.title {
+						color: $grey5;
+						border-right: 1px solid #ededed;
+					}
+					.desc {
+						color: $grey4;
+						background: $darkGrey2;
+					}
+				}
+			}
+			.message {
+				padding-top: 27px;
+				overflow: hidden;
+				.left {
+					width: 267px;
+				}
+				h2 {
+					margin-bottom: 15px;
+				}
+				input, textarea {
+					padding: 18px;
+					border: 1px solid #ececec;
+					border-radius: 6px;
+					width: 209px;
+					font-size: 12px;
+					color: #555555;
+					margin-bottom: 10px;
+				}
+				textarea {
+					height: 138px;
+					width: 335px;
+				}
+				.button {
+					width: inherit;
+					float: right;
+					border: none;
+					background: $yellow;
+					cursor: pointer;
+					padding: 14px 20px;
+					font-size: 12px;
+					margin-top: 5px;
+				}
+			}
+			.message-list {
+				p {
+					display: block;
+				}
+			}
+		}
+		.post {
+			h2 {
+				font-weight: bold;
+				font-size: 23px;
+				color: $darkGrey1;
+			}
+			p {
+				margin: 10px 0 25px 0;
+			&:last-of-type {
+				margin-bottom: 0;
+			}
+			}
+		}
+		.contact-info {
+			.data li a{
+				font-size: 14px !important;
+			}
+		}
+		.contact-info, .post {
+			h2 {
+				margin-bottom: 10px;
+			}
+			.data {
+				margin-top: 14px;
+				li {
+					display: inline-block;
+					margin-right: 17px;
+					i, a {
+						display: block;
+						float: left;
+					}
+					i {
+						margin-right: 13px;
+					}
+					&.address {
+						i {
+							width: 16px;
+							height: 13px;
+							@extend .sprite-home;
+						}
+					}
+					&.phone {
+						i {
+							width: 13px;
+							height: 13px;
+							@extend .sprite-phone;
+						}
+					}
+					&.mail {
+						i {
+							width: 16px;
+							height: 12px;
+							@extend .sprite-mail1;
+						}
+					}
+					&.date {
+							i {
+							width: 17px;
+							height: 19px;
+							@extend .sprite-date;
+						}
+						a {
+							padding-top: 5px;
+						}
+					}
+					&.author {
+							a {
+								margin-top: 2px;
+							}
+							i {
+							width: 15px;
+							height: 16px;
+							@extend .sprite-author;
+						}
+					}
+					&.comments {
+							i {
+							width: 19px;
+							height: 15px;
+							@extend .sprite-comments;
+						}
+					}
+				}
+				a {
+					text-decoration: none;
+					font-size: 11px;
+					color: $grey;
+				}
+			}
+			border-bottom: 1px solid $lightGrey1;
+			padding: 22px 0 29px 0;
+		}
+		footer {
+			background: $lightGrey3;
+			padding: 30px 0px 19px;
+			font-size: 14px;
+			overflow: hidden;
+			.copyright {
+				display: block;
+				float: left;
+			}
+			.social {
+				float: right;
+				a {
+					display: inline-block;
+					width: 17px;
+					height: 17px;
+					margin-left: 11px;
+					margin-bottom: 4px;
+					&.fb {
+						width: 9px;
+						height: 19px;
+						@extend .sprite-fb;
+						margin: 0px 6px 2px 0;
+					}
+					&.tw {
+						height: 14px;
+						@extend .sprite-twitter;
+					}
+					&.dr {
+						@extend .sprite-dribble;
+					}
+					&.p {
+						@extend .sprite-p;
+					}
+				}
+			}
+		}
+	}
+}
+.wrap {
+	width: 640px;
+	margin: 0 auto;
+	padding: 0 30px;
+}
+
+/******** General styles ends ********/
+
+/********* M E D I A  Q U A R I E S *********/
+@media screen and (max-width: 1024px) {
+	.main-container {
+		width: inherit;
+	}
+	.main-container>.left {
+		width: 100%;
+		float: none;
+		nav {
+			width: 100%;
+			ul {
+				width: 100%;
+				display: table;
+				height: 70px;
+				li {
+					display: table-cell;
+					text-align: center;
+					line-height: 70px;
+					border-right: 1px solid #222b2e;
+					&:last-of-type {
+						border-right: none;
+					}
+					a {
+						height: 70px;
+						padding-right: 0;
+						text-align: center;
+						i {
+							position: relative;
+							display: inline-block;
+							margin-left: 10px;
+							top: 0;
+							left: 0;
+						}
+					}
+				}
+			}
+		}
+		.wrapleft {
+			width: 640px;
+			margin: 0 auto;
+			padding: 0 30px;
+		}
+		.logo {
+			margin: 0 auto;
+		}
+	}
+	.main-container>.right {
+		float: none;
+		width: 100% !important;
+	}
+}
+@media screen and (max-width: 960px) {
+	
+}
+/********* M E D I A  Q U A R I E S ends *********/
+
+/******** Other styles ********/
+
+
+/******** Other styles ends ********/
