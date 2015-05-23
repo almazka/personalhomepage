@@ -6,7 +6,6 @@ function Clear($value)
 {
 	return trim(strip_tags($value));
 }
-
 	/* validate and send */
 
 if (isset($_POST["email"]) and isset($_POST["message"])) {
@@ -14,7 +13,7 @@ if (isset($_POST["email"]) and isset($_POST["message"])) {
 	$email = Clear($_POST['email']);
 	$message = Clear($_POST['message']);
 	$website = Clear($_POST['website']);
-
+	$errmsg = "";
 	$errmail = "";
 	$emptymail = "";
 	$emptymsg = "";
@@ -22,8 +21,9 @@ if (isset($_POST["email"]) and isset($_POST["message"])) {
 		$truemail = filter_var($email, FILTER_VALIDATE_EMAIL);
 		if (!$truemail) {
 			$errmail = "Неправильный e-mail!";
-			//$_SESSION["err"] = "E-mail invalid!";
-	} else {
+		} elseif (strlen($message)>500) {
+			$errmsg = "Превышена максимальная длина сообщения, 500 символов!";
+		} else {
 			$list = array (
 				$name, $email, $message
 			);
@@ -132,7 +132,11 @@ if (isset($_POST["email"]) and isset($_POST["message"])) {
 						</div>
 						<?php if ($emptymsg != "") {
 								echo "<p class='notice'>".$emptymsg."</p>";
-							} ?>
+							} 
+							if ($errmsg != "") {
+								echo "<p class='notice'>".$errmsg."</p>";
+							}
+							?>
 						<textarea name="message"><?php echo $message;?></textarea>
 						<input type="submit" class="button" value="Send Message" />
 					</form>
