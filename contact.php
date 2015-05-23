@@ -1,43 +1,52 @@
 <?php
-
+session_start();
 define('FILENAME', "messages.csv");
 
-function Clear($value) {
+function Clear($value)
+{
 	return trim(strip_tags($value));
 }
 
-/* validate and send */
+	/* validate and send */
 
 if (isset($_POST["email"]) and isset($_POST["message"])) {
 	$name = Clear($_POST['name']);
 	$email = Clear($_POST['email']);
 	$message = Clear($_POST['message']);
 	$website = Clear($_POST['website']);
-	$errmsg = "";
-	
+
+	$errmail = "";
+	$emptymail = "";
+	$emptymsg = "";
 	if (!empty($email) && !empty($message)) {
 		$truemail = filter_var($email, FILTER_VALIDATE_EMAIL);
 		if (!$truemail) {
-			$errmsg = "Неправильный e-mail!";
+			$errmail = "Неправильный e-mail!";
 			//$_SESSION["err"] = "E-mail invalid!";
 	} else {
-		$uploadOk = "";
-			$list = array ($name, $email, $message);
-			$fp = fopen(FILENAME, 'w');
-			
+			$list = array (
+				$name, $email, $message
+			);
+			$fp = fopen(FILENAME, 'a');
 			foreach ($list as $fields) {
-					fputcsv($fp, $fields);
+					fputcsv($fp, split(',', $fields), ',', '"');
 			}
-
 			fclose($fp);
-			var_dump($list);
+		$_SESSION["res"] = "Сообщение сохранено";
+		header("Location: contact.php");
+		exit;
 		}
-
-		$uploadOk = "Сообщение сохранено";
+	} else {
+		if (empty($email)) {
+			$emptymail = "Заполните обязательное поле!";
+		}
+		if (empty($message)) {
+			$emptymsg = "Заполните обязательное поле!";
+		}
 	}
-} 
+}
 
-/* end of validate and send */
+	/* end of validate and send */
 ?>
 
 <!DOCTYPE html>
@@ -52,7 +61,6 @@ if (isset($_POST["email"]) and isset($_POST["message"])) {
 	<link rel="icon" href="favicon.ico">
 	<title>Contact</title>
 	<link href="css/style.css" rel="stylesheet">
-	<link href='http://fonts.googleapis.com/css?family=Open+Sans:700,300,400&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 	<!--[if lt IE 9]>
@@ -89,8 +97,10 @@ if (isset($_POST["email"]) and isset($_POST["message"])) {
 					<a href="#" class="prev"></a>
 					<a href="#" class="next"></a>
 				</div>
-				<?php if ($uploadOk != "") {
-					echo "<h2 class='form-msg'>".$uploadOk."</h2>";
+				<?php 
+				if ($_SESSION["res"]) {
+						echo "<h2 class='form-msg'>".$_SESSION["res"]."</h2>";
+						unset($_SESSION["res"]);
 				}
 				?>
 			</header>
@@ -108,21 +118,28 @@ if (isset($_POST["email"]) and isset($_POST["message"])) {
 					<form action="<?php echo $_SERVER['PHP_SELF']; ?>" class="message" method="post">
 						<h2>Send us a message</h2>
 						<div class="left">
-							<input type="text" name="name" placeholder="name">
-							<input type="text" name="email" placeholder="e-mail">
+							<input type="text" name="name" placeholder="name" value="<?php echo $name;?>">
 							<?php 
-							if (empty($_POST['email'])) {
-								echo $errmsg;
+							if ($emptymail != "") {
+								echo "<p class='notice'>".$emptymail."</p>";
+							}
+							if ($errmail != "") {
+								echo "<p class='notice'>".$errmail."</p>";
 							}
 							 ?>
-							<input type="text" name="website" placeholder="website">
+							<input type="text" name="email" placeholder="e-mail" value="<?php echo $email;?>">
+							<input type="text" name="website" placeholder="website" value="<?php echo $website;?>">
 						</div>
-						<textarea name="message"></textarea>
+						<?php if ($emptymsg != "") {
+								echo "<p class='notice'>".$emptymsg."</p>";
+							} ?>
+						<textarea name="message"><?php echo $message;?></textarea>
 						<input type="submit" class="button" value="Send Message" />
 					</form>
 					<section class="message-list">
 						<?php
-						/*if (($handle = fopen(FILENAME, "r")) !== FALSE) {
+
+						if (($handle = fopen(FILENAME, "r")) !== FALSE) {
 								while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
 										$num = count($data);
 										for ($c=0; $c < $num; $c++) {
@@ -130,15 +147,7 @@ if (isset($_POST["email"]) and isset($_POST["message"])) {
 										}
 								}
 								fclose($handle);
-						}*/
-						/*if (file_exists(FILENAME)) {
-							$filearr = file(FILENAME);
-							if (is_array($filearr)) {
-								$filearr = array_reverse($filearr);
-							foreach ($filearr as $value) {
-								echo "<p>".$value."</p>";
-							}
-						}}*/
+						}
 						?>
 					</section>
 			</section>
