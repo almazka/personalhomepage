@@ -68,6 +68,9 @@ body {
 	color: $grey;
 	background: $grey2;
 	padding: 100px 0;
+	&.admin {
+		background: #FFF;
+	}
 }
 
 input,
@@ -385,11 +388,6 @@ p {
 					}
 				}
 			}
-			.message-list {
-				p {
-					display: block;
-				}
-			}
 		}
 		.post {
 			h2 {
@@ -597,9 +595,25 @@ p {
 		width: 100% !important;
 	}
 }
-@media screen and (max-width: 960px) {
-	
+.table {
+	td, th {
+		vertical-align: middle !important;
+		text-align: center;
+	}
+	td {
+		text-align: center;
+		&:nth-of-type(4) {
+			text-align: left;
+		}
+	}
+	tr:hover {
+		th {
+			background-color: #d9edf7 !important;
+		}
+	}
 }
+
+
 /********* M E D I A  Q U A R I E S ends *********/
 
 /******** Other styles ********/

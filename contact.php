@@ -6,17 +6,26 @@ function Clear($value)
 {
 	return trim(strip_tags($value));
 }
+function emptyData($value)
+{
+	if (empty($value)) {
+		$value = "-";
+	}
+}
 	/* validate and send */
 
 if (isset($_POST["email"]) and isset($_POST["message"])) {
 	$name = Clear($_POST['name']);
 	$email = Clear($_POST['email']);
-	$message = Clear($_POST['message']);
+	$mess = Clear($_POST['message']);
+	$message = nl2br($mess);
 	$website = Clear($_POST['website']);
 	$errmsg = "";
 	$errmail = "";
 	$emptymail = "";
 	$emptymsg = "";
+	emptyData($name);
+	emptyData($website);
 	if (!empty($email) && !empty($message)) {
 		$truemail = filter_var($email, FILTER_VALIDATE_EMAIL);
 		if (!$truemail) {
@@ -25,12 +34,10 @@ if (isset($_POST["email"]) and isset($_POST["message"])) {
 			$errmsg = "Превышена максимальная длина сообщения, 500 символов!";
 		} else {
 			$list = array (
-				$name, $email, $message
+				$name, $email, $website, $message
 			);
 			$fp = fopen(FILENAME, 'a');
-			foreach ($list as $fields) {
-					fputcsv($fp, split(',', $fields), ',', '"');
-			}
+					fputcsv($fp, $list);
 			fclose($fp);
 		$_SESSION["res"] = "Сообщение сохранено";
 		header("Location: contact.php");
@@ -140,20 +147,6 @@ if (isset($_POST["email"]) and isset($_POST["message"])) {
 						<textarea name="message"><?php echo $message;?></textarea>
 						<input type="submit" class="button" value="Send Message" />
 					</form>
-					<section class="message-list">
-						<?php
-
-						if (($handle = fopen(FILENAME, "r")) !== FALSE) {
-								while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
-										$num = count($data);
-										for ($c=0; $c < $num; $c++) {
-											echo "<p>".$data[$c] . "</p>";
-										}
-								}
-								fclose($handle);
-						}
-						?>
-					</section>
 			</section>
 		</div>
 		<footer>
