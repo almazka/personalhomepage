@@ -17,8 +17,8 @@ function emptyData($value)
 if (isset($_POST["email"]) and isset($_POST["message"])) {
 	$name = Clear($_POST['name']);
 	$email = Clear($_POST['email']);
-	$mess = Clear($_POST['message']);
-	$message = nl2br($mess);
+	$message = Clear($_POST['message']);
+	$message = nl2br($message);
 	$website = Clear($_POST['website']);
 	$errmsg = "";
 	$errmail = "";

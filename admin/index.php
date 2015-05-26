@@ -1,5 +1,28 @@
 <?php 
 define('FILENAME', "../messages.csv");
+
+if (isset($_GET['del'])) {
+	$del_id = $_GET['del'];
+	$array = array();
+	if (($handle = fopen(FILENAME, "r")) !== FALSE) {
+		$r = 0;
+		while (($data = fgetcsv($handle)) !== FALSE) {
+			if ($r == $del_id) {
+				unset($data);
+			}
+				$r++;
+				$array[] = $data;
+		}
+	}
+	$fp = fopen(FILENAME, 'a');
+	file_put_contents(FILENAME, '');
+		foreach ($array as $fields) {
+			fputcsv($fp, $fields);
+		}
+	fclose($fp);
+	header("Location: index.php");
+	exit;
+}
  ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -62,7 +85,7 @@ define('FILENAME', "../messages.csv");
 
 <?php
 
-$row = 1;
+$row = -1;
 if (($handle = fopen(FILENAME, "r")) !== FALSE) {
 		while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
 				$num = count($data);
@@ -71,7 +94,7 @@ if (($handle = fopen(FILENAME, "r")) !== FALSE) {
 				for ($c=0; $c < $num; $c++) {
 					echo "<td>".$data[$c]."</td>";
 				}
-				echo '<td><button type="button" class="btn btn-success">Удалить</button></td>';
+				echo "<td><a href='index.php?del=".$row."' class='btn btn-success'>Удалить</a></td>";
 				echo "</tr>";
 		}
 		fclose($handle);
