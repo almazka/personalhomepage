@@ -1,27 +1,11 @@
-<?php 
-define('FILENAME', "../messages.csv");
+<?php
+include '../config.php';
+$db = new PDO("mysql:host=".DB_HOST.";dbname=".DB_NAME,DB_USER,DB_PASS);
 
 if (isset($_GET['del'])) {
 	$del_id = $_GET['del'];
-	$array = array();
-	if (($handle = fopen(FILENAME, "r")) !== FALSE) {
-		$r = 0;
-		while (($data = fgetcsv($handle)) !== FALSE) {
-			if ($r == $del_id) {
-				unset($data);
-			}
-				$r++;
-				$array[] = $data;
-		}
-	}
-	$fp = fopen(FILENAME, 'a');
-	file_put_contents(FILENAME, '');
-		foreach ($array as $fields) {
-			fputcsv($fp, $fields);
-		}
-	fclose($fp);
-	header("Location: index.php");
-	exit;
+	$sql = "DELETE FROM messages WHERE id=$del_id";
+	$res = $db->query($sql);
 }
  ?>
 <!DOCTYPE html>
@@ -84,20 +68,17 @@ if (isset($_GET['del'])) {
 	</tr>
 
 <?php
-
-$row = -1;
-if (($handle = fopen(FILENAME, "r")) !== FALSE) {
-		while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
-				$num = count($data);
-				echo "<tr>";
-				$row++;
-				for ($c=0; $c < $num; $c++) {
-					echo "<td>".$data[$c]."</td>";
-				}
-				echo "<td><a href='index.php?del=".$row."' class='btn btn-success'>Удалить</a></td>";
-				echo "</tr>";
-		}
-		fclose($handle);
+$sql = "SELECT id,name,email,website,message FROM messages";
+$res = $db->query($sql);
+$msg = $res->fetchAll();
+	foreach ($msg as $value) {
+	echo "<tr>";
+	echo "<td>".$value['name']."</td>";
+	echo "<td>".$value['email']."</td>";
+	echo "<td>".$value['website']."</td>";
+	echo "<td>".$value['message']."</td>";
+	echo "<td><a href='index.php?del=".$value['id']."' class='btn btn-success'>Удалить</a></td>";
+	echo "</tr>";
 }
 ?>
 </table>

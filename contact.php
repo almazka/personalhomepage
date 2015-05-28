@@ -1,31 +1,24 @@
 <?php
 session_start();
-define('FILENAME', "messages.csv");
+include 'config.php';
+$db = new PDO("mysql:host=".DB_HOST.";dbname=".DB_NAME,DB_USER,DB_PASS);
 
-function Clear($value)
+function clear($value)
 {
 	return trim(strip_tags($value));
-}
-function emptyData($value)
-{
-	if (empty($value)) {
-		$value = "-";
-	}
 }
 	/* validate and send */
 
 if (isset($_POST["email"]) and isset($_POST["message"])) {
-	$name = Clear($_POST['name']);
-	$email = Clear($_POST['email']);
-	$message = Clear($_POST['message']);
+	$name = clear($_POST['name']);
+	$email = clear($_POST['email']);
+	$message = clear($_POST['message']);
 	$message = nl2br($message);
-	$website = Clear($_POST['website']);
+	$website = clear($_POST['website']);
 	$errmsg = "";
 	$errmail = "";
 	$emptymail = "";
 	$emptymsg = "";
-	emptyData($name);
-	emptyData($website);
 	if (!empty($email) && !empty($message)) {
 		$truemail = filter_var($email, FILTER_VALIDATE_EMAIL);
 		if (!$truemail) {
@@ -33,15 +26,14 @@ if (isset($_POST["email"]) and isset($_POST["message"])) {
 		} elseif (strlen($message)>500) {
 			$errmsg = "Превышена максимальная длина сообщения, 500 символов!";
 		} else {
-			$list = array (
-				$name, $email, $website, $message
-			);
-			$fp = fopen(FILENAME, 'a');
-					fputcsv($fp, $list);
-			fclose($fp);
+			$sql = "INSERT INTO messages (name,email,website,message) VALUES(:name, :email, :website, :message)";
+			$res = $db->prepare($sql);
+			$res->execute(array(':name'=>$name, ':email'=>$email, ':website'=>$website, ':message'=>$message));
 		$_SESSION["res"] = "Сообщение сохранено";
-		header("Location: contact.php");
-		exit;
+		$name = "";
+		$email = "";
+		$message = "";
+		$website = "";
 		}
 	} else {
 		if (empty($email)) {
@@ -112,7 +104,7 @@ if (isset($_POST["email"]) and isset($_POST["message"])) {
 				?>
 			</header>
 			<section class="main-area">
-				<img class="map" src="img/map.jpg" height="360" width="640" alt="map">
+				<script type="text/javascript" charset="utf-8" src="https://api-maps.yandex.ru/services/constructor/1.0/js/?sid=rowjoNRTGVNFL-a5ualbpOteMk9GiyfQ&width=640&height=360"></script>
 				<article class="contact-info">
 					<h2>Contact info</h2>
 					<p>This is Photoshop's version  of Lorem Ipsum. Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem nibh id elit. Duis sed odio sit amet nibh vulputate cursus a sit amet mauris. Morbi accumsan ipsum velit. Nam nec tellus a odio tincidunt auctor a ornare odio. </p>
